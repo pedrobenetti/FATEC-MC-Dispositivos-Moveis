@@ -1,0 +1,11 @@
+{
+  "name": "FatecMC-DispositivosMoveis",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:pedrobenetti/FATEC-MC-Dispositivos-Moveis.git",
+  "author": "pedrobenetti <pedrobenetti@outlook.com.br>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
