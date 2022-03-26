@@ -1,3 +1,4 @@
+import { hash } from "bcryptjs";
 interface IUserRequest{        //
     name: string;              // Interface para definir o tipo dos dados que serão requistados do usuário.
     email: string;             // Isso impede que o user forneça uma palavra no campo de telefone, por exemplo.
@@ -8,12 +9,15 @@ interface IUserRequest{        //
 class CreateUserService{
     async execute({ name, email, admin = false, password}: IUserRequest) {
         
-        if(!email){
-            throw new Error("Email Incorrect!");
+        if(email!){
+            throw new Error('Email Incorrect!');
         }
 
+        const passwordHash = await hash(password, 8);
+        console.log(passwordHash);
+
         let vuser = {
-            name: "Pedro", email: "pedrobenetti@outlook.com.br", admin: false, password: 1234
+            name: "Pedro", email: "email 2", admin: false, password: 1234
         }
 
         return vuser;
