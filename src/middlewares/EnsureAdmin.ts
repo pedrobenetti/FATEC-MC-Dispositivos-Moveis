@@ -11,5 +11,3 @@ export async function ensureAdmin(request: Request, response: Response, next: Ne
         error: "Unauthorized"
     });
 }
-
-
