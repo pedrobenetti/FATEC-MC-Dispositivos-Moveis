@@ -1,5 +1,8 @@
 import express, { Request, Response, NextFunction, } from "express";
 import "express-async-errors";
+import "reflect-metadata";
+import "./database";
+
 import { router } from "./Routes";
 
 const app = express();
