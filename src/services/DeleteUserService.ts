@@ -1,5 +1,5 @@
-import { classToPlain } from "class-transformer";
-import { json } from "express";
+import { getCustomRepository, Repository } from "typeorm";
+import { UsersRepositories } from "../repositories/UsersRepositories";
 
 interface IUserDelete{ 
     id: string
@@ -8,12 +8,31 @@ interface IUserDelete{
 class DeleteUserService{
     async execute({id}: IUserDelete){
 
-        console.log(id);
-        let messagmsgeDelete = {
-            message: "Registro excluído com sucesso"
+        const usersRepositories = getCustomRepository(UsersRepositories);
+
+        const userAlreadyExists = await usersRepositories.findOne({
+            id,
+        });
+
+        if(!userAlreadyExists){
+            throw new Error ("User not found!");
         }
 
-        return messagmsgeDelete;
+        return await usersRepositories.delete(id).then(f => {
+            let messagmsgeDelete = {
+                message: "Register deleted successfully!"
+            }
+
+            return messagmsgeDelete;
+            
+        }, err=> {
+            throw new Error ("Failed to delete!");
+        });
+
+
+        
+
+        
     }
 }
 
