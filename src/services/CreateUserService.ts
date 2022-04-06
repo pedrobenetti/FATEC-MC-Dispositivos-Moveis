@@ -1,31 +1,56 @@
 import { hash } from "bcryptjs";
-interface IUserRequest{        //
+import { getCustomRepository } from "typeorm";
+import { UserRepositories } from "../repositories/UsersRepositories"; 
+
+interface IUserRequest{        
     name: string;              // Interface para definir o tipo dos dados que serão requistados do usuário.
     email: string;             // Isso impede que o user forneça uma palavra no campo de telefone, por exemplo.
-    admin?: boolean;           //
+    admin?: boolean;           
     password: string;          
 }
 
 class CreateUserService{
     async execute({ name, email, admin = false, password}: IUserRequest) {
         
-        if(email!){
-            throw new Error('Email Incorrect!');
+        const UserRepository = getCustomRepository(UserRepositories);
+
+        if(!email){
+            throw new Error('Email required!');
+        }
+
+        if(!name){
+            throw new Error('Name required!');
+        }
+
+        if(!password){
+            throw new Error('Password required!');
+        }
+
+        const userAlreadyExists = await UserRepository.findOne({
+            email,
+        });
+
+        if (userAlreadyExists){
+            throw new Error ("User already exists!")
         }
 
         const passwordHash = await hash(password, 8);
-        console.log(passwordHash);
 
-        let vuser = {
-            name: "Pedro", email: "email 2", admin: false, password: 1234
-        }
+        const user = UserRepository.create({
+            name,  
+            email,
+            admin,
+            password: passwordHash,
+        });
 
-        return vuser;
+        await UserRepository.save(user);
+
+        return user;
     }
 /** 
  *
 Método assíncrono chamado excute. Na primeira linha, recebe os dados listados na interface.
-O IF serve para configurar o email sempre como incorreto, apenas para testes. Logo abaixo, um objeto para simular a entrada de 
+Logo abaixo, um objeto para simular a entrada de 
 valores das variáveis. 
 
 O principal emprego dessa função será validar dados para evitar problemas como duplicidade de email, nomes 
