@@ -1,26 +1,14 @@
+import { getCustomRepository } from "typeorm";
+import { UsersRepositories } from "../repositories/UsersRepositories";
 import { classToPlain } from "class-transformer";
 
 class ListUserService { 
     async execute() {
+        const usersRepositories = getCustomRepository(UsersRepositories);
 
-        const usersret = [{
-            "id": "1",
-            "nome": "Pedro Benetti", 
-            "email": "pedrobenetti@outlook.com.br",
-            "admin": "1",
-            "password": "1234", 
-            "status": "ativo"   
-        },{
-            "id": "2",
-            "nome": "Andrea Benetti", 
-            "email": "andreabenetti@outlook.com.br",
-            "admin": "1",
-            "password": "12345", 
-            "status": "ativo"  
+        const users = await usersRepositories.find();
 
-        }]
-
-        return classToPlain(usersret);
+        return classToPlain(users);
     }
 }
 
