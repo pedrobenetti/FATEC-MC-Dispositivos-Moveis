@@ -11,6 +11,10 @@ interface IUserRequest{
 class UpdateUserService{
     async execute({id, name, admin = false, password}: IUserRequest) {   
 
+        if(!id){
+            throw new Error('ID required!');
+        }
+
         if(!name){
             throw new Error('Name required!');
         }
