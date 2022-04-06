@@ -1,6 +1,6 @@
 import { hash } from "bcryptjs";
 import { getCustomRepository } from "typeorm";
-import { UserRepositories } from "../repositories/UsersRepositories"; 
+import { UsersRepositories } from "../repositories/UsersRepositories"; 
 
 interface IUserRequest{        
     name: string;              // Interface para definir o tipo dos dados que serão requistados do usuário.
@@ -12,7 +12,7 @@ interface IUserRequest{
 class CreateUserService{
     async execute({ name, email, admin = false, password}: IUserRequest) {
         
-        const UserRepository = getCustomRepository(UserRepositories);
+        const UserRepository = getCustomRepository(UsersRepositories);
 
         if(!email){
             throw new Error('Email required!');
